@@ -1,0 +1,17 @@
+.graph-container {
+    height: 100vh;
+    background-color: azure;
+}
+
+text {
+    transition: 0.2s ease-in-out;
+    cursor: pointer;
+
+    &:hover {
+        font-size: 5rem;
+        fill: red;
+    }
+}
+
+
+

@@ -1,0 +1,57 @@
+<div class="level">
+    <input class="input" type="text" [(ngModel)]="sheet">
+    <button class="button" (click)="parseJSON(sheet)">Parse</button>
+</div>
+<div class="columns">
+  <div class="column">
+    <div class="graph-container">
+        <ngx-graph [update$]="update$"
+            [curve]="curve"
+            [links]="data.links"
+            layout="d3ForceDirected"
+            [nodes]="data.nodes"
+            [enableZoom]="true"
+            [orientation]="'top'"
+            [draggingEnabled]="false">
+            <ng-template #defsTemplate>
+                <svg:marker id="arrow" viewBox="0 -5 10 10" refX="8" refY="0" markerWidth="10" markerHeight="10"
+                    orient="auto">
+                    <svg:path d="M0,-5L10,0L0,5" />
+                </svg:marker>
+            </ng-template>
+
+            <ng-template #nodeTemplate let-node>
+                <svg:g (click)="onNodeClick($event, node)" class="node">
+                    <svg:text>
+                        {{ node.id | idstr }}
+                    </svg:text>
+                </svg:g>
+            </ng-template>
+
+            <ng-template #linkTemplate let-link>
+                <svg:g class="edge">
+                    <svg:path class="line" stroke-width="1" marker-end="url(#arrow)"></svg:path>
+                    <svg:text class="edge-label" text-anchor="middle">
+                        <textPath class="text-path" [attr.href]="'#' + link.id"
+                            [style.dominant-baseline]="link.dominantBaseline" startOffset="50%">
+                        </textPath>
+                    </svg:text>
+                </svg:g>
+            </ng-template>
+        </ngx-graph>
+    </div>
+  </div>
+  <div class="column">
+    <div *ngIf="currentNode" class="node-view">
+        <p>ID: {{ currentNode.id}}</p>
+        <p>Label: {{ currentNode.label}}</p>
+        <button (click)="addNode(currentNode.id)">Add node</button>
+        <select [(ngModel)]="currentTargetID">
+            <option *ngFor="let node of data.nodes" [value]="node.id">{{node.label}}</option>
+        </select>
+    </div>
+  </div>
+</div>
+
+
+
