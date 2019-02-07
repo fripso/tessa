@@ -46,9 +46,6 @@
         <p>ID: {{ currentNode.id}}</p>
         <p>Label: {{ currentNode.label}}</p>
         <button (click)="addNode(currentNode.id)">Add node</button>
-        <select [(ngModel)]="currentTargetID">
-            <option *ngFor="let node of data.nodes" [value]="node.id">{{node.label}}</option>
-        </select>
     </div>
   </div>
 </div>
