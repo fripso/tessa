@@ -23,6 +23,8 @@ export class GraphComponent implements OnInit {
     currentNode: any;
     i = 0;
 
+    sheet: any;
+
 
     constructor(
     ) { }

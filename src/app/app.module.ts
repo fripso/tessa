@@ -11,9 +11,10 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { AppComponent } from './app.component';
 import { GraphComponent } from './components/graph/graph.component';
 import { IdstrPipe } from './pipes/idstr.pipe';
+import { GoogleAuthComponent } from './components/google-auth/google-auth.component';
 
 @NgModule({
-  declarations: [AppComponent, GraphComponent, IdstrPipe],
+  declarations: [AppComponent, GraphComponent, IdstrPipe, GoogleAuthComponent],
     imports: [BrowserModule, FormsModule, HttpClientModule, NgxGraphModule, NgxChartsModule, BrowserAnimationsModule],
   providers: [],
   bootstrap: [AppComponent]
