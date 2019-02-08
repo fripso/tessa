@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as shape from 'd3-shape';
 import { Subject } from 'rxjs';
-
+import { GapiService } from '../../services/gapi.service';
 
 @Component({
     selector: 'app-graph',
@@ -24,9 +24,13 @@ export class GraphComponent implements OnInit {
     i = 0;
 
     sheet: any;
+    ssid: string;
+    range: string;
+
 
 
     constructor(
+        private gapi: GapiService
     ) { }
 
     ngOnInit() {}
@@ -82,6 +86,11 @@ export class GraphComponent implements OnInit {
             target: targ
         });
         this.update$.next();
+    }
+
+
+    getSheet() {
+        this.gapi.getSheet(this.ssid, this.range).then(res => console.log(res));
     }
 
 }

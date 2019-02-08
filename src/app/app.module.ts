@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-
+import { RouterModule, Routes } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 
 import { NgxGraphModule } from '@swimlane/ngx-graph';
@@ -13,9 +13,24 @@ import { GraphComponent } from './components/graph/graph.component';
 import { IdstrPipe } from './pipes/idstr.pipe';
 import { GoogleAuthComponent } from './components/google-auth/google-auth.component';
 
+
+import { AuthGuard } from './guards/auth.guard';
+
+const routes: Routes = [
+    { path: '', component: GoogleAuthComponent },
+    { path: 'graph', component: GraphComponent, canActivate: [AuthGuard] }
+];
+
+
 @NgModule({
   declarations: [AppComponent, GraphComponent, IdstrPipe, GoogleAuthComponent],
-    imports: [BrowserModule, FormsModule, HttpClientModule, NgxGraphModule, NgxChartsModule, BrowserAnimationsModule],
+    imports: [
+        RouterModule.forRoot(routes),
+        BrowserModule, FormsModule,
+        HttpClientModule,
+        NgxGraphModule,
+        NgxChartsModule,
+        BrowserAnimationsModule],
   providers: [],
   bootstrap: [AppComponent]
 })
