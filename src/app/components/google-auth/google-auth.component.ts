@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { credentials } from '../../../secrets/google.js';
 
+declare const gapi: any;
+
 @Component({
     selector: 'app-google-auth',
     templateUrl: './google-auth.component.html',
@@ -18,7 +20,7 @@ export class GoogleAuthComponent implements OnInit {
         // Loads the client library and the auth2 library together for efficiency.
         // Loading the auth2 library is optional here since `gapi.client.init` function will load
         // it if not already loaded. Loading it upfront can save one network request.
-        gapi.load('client:auth2', () => this.initClient());
+        gapi.load('client:auth2', this.initClient.bind(this));
     }
 
     initClient() {
@@ -56,7 +58,9 @@ export class GoogleAuthComponent implements OnInit {
     }
 
     handleSignOutClick(event) {
-        gapi.auth2.getAuthInstance().signOut();
+        gapi.auth2.getAuthInstance().signOut().then(() => {
+            console.log('logged out');
+        });
     }
 
     makeApiCall() {
