@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import credentials from '../../../secrets/google.js';
+import { credentials } from '../../../secrets/google.js';
 
 @Component({
     selector: 'app-google-auth',
@@ -22,6 +22,7 @@ export class GoogleAuthComponent implements OnInit {
     }
 
     initClient() {
+
         // Initialize the client with API key and People API, and initialize OAuth with an
         // OAuth 2.0 client ID and scopes (space delimited string) to request access.
         gapi.client.init({
