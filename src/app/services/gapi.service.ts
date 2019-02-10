@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { credentials } from '../../secrets/google.js';
 import { BehaviorSubject } from 'rxjs';
 declare const gapi: any;
@@ -10,7 +10,9 @@ export class GapiService {
 
     signInStatus$ = new BehaviorSubject<boolean>(null);
 
-    constructor() { }
+    constructor(
+        private zone: NgZone
+    ) { }
 
     loadClient() {
         gapi.load('client:auth2', this.initClient.bind(this));
@@ -24,10 +26,12 @@ export class GapiService {
             scope: 'https://www.googleapis.com/auth/spreadsheets.readonly'
         }).then(() => {
             // Listen for sign-in state changes.
-            gapi.auth2.getAuthInstance().isSignedIn.listen(isSignedIn => this.signInStatus$.next(isSignedIn));
+            gapi.auth2.getAuthInstance().isSignedIn.listen(isSignedIn => {
+                this.zone.run(() => this.signInStatus$.next(isSignedIn));
+            });
 
             // Handle the initial sign-in state.
-            this.signInStatus$.next(gapi.auth2.getAuthInstance().isSignedIn.get());
+            this.zone.run(() => this.signInStatus$.next(gapi.auth2.getAuthInstance().isSignedIn.get()));
         });
     }
 

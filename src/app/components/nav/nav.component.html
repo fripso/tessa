@@ -1,0 +1,18 @@
+<aside class="menu" *ngIf="status$ | async">
+
+    <p class="menu-label">
+        Graphics
+    </p>
+    <ul class="menu-list">
+        <li><a>Viewer</a></li>
+    </ul>
+
+    <p class="menu-label">
+        ACCOUNT
+    </p>
+    <ul class="menu-list">
+        <li><a (click)="signOut()">Sign out</a></li>
+    </ul>
+</aside>
+
+

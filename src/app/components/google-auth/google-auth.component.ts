@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef, NgZone, OnDestroy } from '@angular/core';
 import { GapiService } from '../../services/gapi.service';
-import { Router } from '@angular/router';
+import { Router, ActivationEnd } from '@angular/router';
 
 @Component({
     selector: 'app-google-auth',
@@ -9,32 +9,27 @@ import { Router } from '@angular/router';
 })
 export class GoogleAuthComponent implements OnInit, OnDestroy {
 
-    loggedIn: boolean;
 
     constructor(
         private gapi: GapiService,
-        private ref: ChangeDetectorRef,
         private zone: NgZone,
         private router: Router
     ) { }
 
     ngOnInit() {
-        this.gapi.signInStatus$.subscribe(status => {
-            if (status === true) {
-                this.zone.run(() => this.router.navigate(['graph']));
+        this.gapi.signInStatus$.subscribe( status => {
+            if (status) {
+                this.router.navigate(['graph']);
             }
-            console.log(status);
-            this.loggedIn = status;
-            this.ref.detectChanges();
         });
     }
 
-    ngOnDestroy() {
-        this.gapi.signInStatus$.unsubscribe();
-    }
+    ngOnDestroy() {}
 
     login() {
-        this.gapi.handleSignInClick().then(res => console.log(res));
+        this.gapi.handleSignInClick()
+            .then(() => this.zone.run(() => this.router.navigate(['graph'])))
+            .catch(err => console.error(err));
     }
 
 

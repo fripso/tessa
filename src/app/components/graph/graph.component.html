@@ -4,14 +4,13 @@
 </div>
 <div class="columns">
   <div class="column">
-    <div class="graph-container">
+      <p>graph</p>
+    <!-- <div class="graph-container">
         <ngx-graph [update$]="update$"
             [curve]="curve"
             [links]="data.links"
-            layout="d3ForceDirected"
             [nodes]="data.nodes"
-            [enableZoom]="true"
-            [orientation]="'top'"
+            [enableZoom]="false"
             [draggingEnabled]="false">
             <ng-template #defsTemplate>
                 <svg:marker id="arrow" viewBox="0 -5 10 10" refX="8" refY="0" markerWidth="10" markerHeight="10"
@@ -39,7 +38,7 @@
                 </svg:g>
             </ng-template>
         </ngx-graph>
-    </div>
+    </div> -->
   </div>
   <div class="column">
     <div *ngIf="currentNode" class="node-view">

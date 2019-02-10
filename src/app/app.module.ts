@@ -15,6 +15,7 @@ import { GoogleAuthComponent } from './components/google-auth/google-auth.compon
 
 
 import { AuthGuard } from './guards/auth.guard';
+import { NavComponent } from './components/nav/nav.component';
 
 const routes: Routes = [
     { path: '', component: GoogleAuthComponent },
@@ -23,7 +24,7 @@ const routes: Routes = [
 
 
 @NgModule({
-  declarations: [AppComponent, GraphComponent, IdstrPipe, GoogleAuthComponent],
+  declarations: [AppComponent, GraphComponent, IdstrPipe, GoogleAuthComponent, NavComponent],
     imports: [
         RouterModule.forRoot(routes),
         BrowserModule, FormsModule,
@@ -31,7 +32,7 @@ const routes: Routes = [
         NgxGraphModule,
         NgxChartsModule,
         BrowserAnimationsModule],
-  providers: [],
+    providers: [AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
