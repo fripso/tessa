@@ -13,15 +13,12 @@ export class AppComponent implements OnInit {
 
     constructor(
         private gapi: GapiService,
-        private ref: ChangeDetectorRef
         ) {}
 
         ngOnInit() {
             this.gapi.loadClient();
             this.gapi.signInStatus$.asObservable().subscribe(status => {
-                    console.log(status);
                     this.status = status;
-                    this.ref.detectChanges();
             });
         }
     }
