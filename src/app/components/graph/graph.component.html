@@ -1,30 +1,37 @@
-<div class="level">
-    <input class="input" type="text" [(ngModel)]="ssid" placeholder="Sheet ID">
-    <input class="input" type="text" [(ngModel)]="range" placeholder="Range">
-    <button class="button" (click)="getSheet()">Load JSON</button>
-</div>
 <div class="columns">
-  <div class="column is-10">
-      <p>graph</p>
-    <div class="graph-container">
-        <ngx-graph [update$]="update$"
-            [curve]="curve"
-            [links]="data.links"
-            [nodes]="data.nodes"
-            [orientation]="'top'"
-            [enableZoom]="false"
-            [draggingEnabled]="false">
-             <!-- <ng-template #defsTemplate>
-                <svg:marker id="arrow" viewBox="0 -5 10 10" refX="8" refY="0" markerWidth="10" markerHeight="10"
-                    orient="auto">
-                    <svg:path d="M0,-5L10,0L0,5" />
-                </svg:marker>
-            </ng-template> -->
+    <div class="column is-2">
+        <div class="section">
+            <app-nav></app-nav>
+        </div>
+    </div>
+    <div class="column">
+        <div class="section">
+            <div class="level">
+                <input class="input" type="text" [(ngModel)]="ssid" placeholder="Sheet ID">
+                <input class="input" type="text" [(ngModel)]="range" placeholder="Range">
+                <button class="button" (click)="getSheet()">Load JSON</button>
+            </div>
+            <div class="columns">
+                <div class="column is-10">
+                    <div class="graph-container">
+                        <ngx-graph [update$]="update$"
+                        [curve]="curve"
+                        [links]="data.links"
+                        [nodes]="data.nodes"
+                        [orientation]="'top'"
+                        [enableZoom]="false"
+                        [draggingEnabled]="false">
+                        <!-- <ng-template #defsTemplate>
+                            <svg:marker id="arrow" viewBox="0 -5 10 10" refX="8" refY="0" markerWidth="10" markerHeight="10"
+                            orient="auto">
+                            <svg:path d="M0,-5L10,0L0,5" />
+                        </svg:marker>
+                    </ng-template> -->
 
-            <ng-template #nodeTemplate let-node>
-                <svg:g (click)="onNodeClick($event, node)" class="node">
-                    <svg:circle [attr.r]="10"></svg:circle>
-                    <svg:text>
+                    <ng-template #nodeTemplate let-node>
+                        <svg:g (click)="onNodeClick($event, node)" class="node">
+                        <svg:circle [attr.r]="5" [attr.cy]="5" [attr.cx]="5"></svg:circle>
+                        <svg:text>
                         {{ node.id }}
                     </svg:text>
                 </svg:g>
@@ -32,24 +39,25 @@
 
             <!-- <ng-template #linkTemplate let-link>
                 <svg:g class="edge">
-                    <svg:path class="line" stroke-width="1" marker-end="url(#arrow)"></svg:path>
-                    <svg:text class="edge-label" text-anchor="middle">
-                        <textPath class="text-path" [attr.href]="'#' + link.id"
-                            [style.dominant-baseline]="link.dominantBaseline" startOffset="50%">
-                        </textPath>
-                    </svg:text>
-                </svg:g>
-            </ng-template> -->
-        </ngx-graph>
-    </div>
-  </div>
-  <div class="column">
+                <svg:path class="line" stroke-width="1" marker-end="url(#arrow)"></svg:path>
+                <svg:text class="edge-label" text-anchor="middle">
+                <textPath class="text-path" [attr.href]="'#' + link.id"
+                [style.dominant-baseline]="link.dominantBaseline" startOffset="50%">
+            </textPath>
+        </svg:text>
+    </svg:g>
+</ng-template> -->
+</ngx-graph>
+</div>
+</div>
+<div class="column">
     <div *ngIf="currentNode" class="node-view">
         <p>ID: {{ currentNode.id}}</p>
         <p>Label: {{ currentNode.label}}</p>
         <button class="button" (click)="addNode(currentNode.id)">Add node</button>
     </div>
-  </div>
+</div>
+</div>
 </div>
 
 

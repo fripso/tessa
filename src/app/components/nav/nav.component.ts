@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { GapiService } from 'src/app/services/gapi.service';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
@@ -12,14 +12,16 @@ import { Router } from '@angular/router';
 export class NavComponent implements OnInit {
 
     status$: Observable<boolean>;
+    image: string;
 
     constructor(
         private gapi: GapiService,
+        private zone: NgZone,
         private router: Router
     ) { }
 
     ngOnInit() {
-        this.status$ = this.gapi.signInStatus$;
+        this.image = this.gapi.getUser().getImageUrl();
     }
 
     signOut() {

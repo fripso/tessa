@@ -1,21 +1,28 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { GapiService } from '../services/gapi.service';
-import { map } from 'rxjs/operators';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
 
     constructor(private gapi: GapiService, private router: Router) { }
 
+
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        return this.gapi.signInStatus$.asObservable().pipe(
-            map(status => {
-                if (!status) {
+        if (this.gapi.clientLoaded$.getValue()) {
+            return this.gapi.getStatus();
+        }
+
+        return this.gapi.loadClient()
+            .then(res => {
+                return this.gapi.initClient();
+            })
+            .then(res => {
+                if (!this.gapi.getStatus()) {
                     this.router.navigate(['']);
-                    return false;
+                } else {
+                    return this.gapi.getStatus();
                 }
-                return true;
-            }));
+            });
     }
 }

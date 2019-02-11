@@ -32,29 +32,6 @@ export class GraphComponent implements OnInit {
 
     ngOnInit() {}
 
-    private parseJSON(array: Array<Array<string>>, firstRow: number, idCol: number, linkCol: number, labelCol: number) {
-        const data = {
-            links: [],
-            nodes: []
-        };
-        array.slice(firstRow).forEach(node => {
-            if (node[labelCol]) {
-                data.nodes.push({
-                    id: node[idCol].substr(-4),
-                    label: node[labelCol]
-                });
-                if (node[linkCol] !== node[idCol]) {
-                    data.links.push({
-                        source: node[linkCol].substr(-4),
-                        target: node[idCol].substr(-4)
-                    });
-                }
-            }
-        });
-        this.data = data;
-        this.update$.next();
-    }
-
     onNodeClick(e: any, node: any) {
         if (e.shiftKey) {
             this.addLink(this.currentNode.id, node.id);
@@ -85,11 +62,28 @@ export class GraphComponent implements OnInit {
         this.update$.next();
     }
 
-
     getSheet() {
         this.gapi.getSheet(this.ssid, this.range).then(res => {
             this.parseJSON(res.result.values, 8, 0, 1, 13);
         });
+    }
+
+    private parseJSON(array: Array<Array<string>>, firstRow: number, idCol: number, linkCol: number, labelCol: number) {
+        array.slice(firstRow).forEach(node => {
+            if (node[labelCol]) {
+                this.data.nodes.push({
+                    id: node[idCol].substr(-4),
+                    label: node[labelCol]
+                });
+                if (node[linkCol] !== node[idCol]) {
+                    this.data.links.push({
+                        source: node[linkCol].substr(-4),
+                        target: node[idCol].substr(-4)
+                    });
+                }
+            }
+        });
+        this.update$.next();
     }
 
 }

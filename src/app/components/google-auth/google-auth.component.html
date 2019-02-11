@@ -1,18 +1,30 @@
 <section class="hero">
     <div class="hero-body">
-        <div class="container">
-            <h1 class="title">
-                Tessa
-            </h1>
-            <button class="button" (click)="login()">Log in</button>
+        <div class="container" *ngIf="!loading">
+            <div class="title-container">
+                <h1 class="title is-flipped">
+                    tessa
+                </h1>
+            </div>
+            <div class="main-container">
+                <div *ngIf="loggedIn === true">
+                    <img [src]="user.Paa" alt="You" class="g-image ">
+
+                    <div class="section">
+                        <p>
+                            Hi {{ user.ofa }}, <a [routerLink]="['graph']">let's make a graph!</a>
+                        </p>
+                    </div>
+
+                    <p class="is-size-7">
+                        <a (click)="logout()">Not you?</a>
+                    </p>
+                </div>
+                <div class="section">
+                    <button class="button" *ngIf="loggedIn === false" (click)="login()">
+                        Sign in with Google</button>
+                </div>
+            </div>
         </div>
     </div>
 </section>
-
-<div >
-
-</div>
-
-
-
-

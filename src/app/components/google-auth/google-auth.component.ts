@@ -1,15 +1,17 @@
-import { Component, OnInit, ChangeDetectorRef, NgZone, OnDestroy } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { GapiService } from '../../services/gapi.service';
-import { Router, ActivationEnd } from '@angular/router';
+import { Router } from '@angular/router';
+
 
 @Component({
     selector: 'app-google-auth',
     templateUrl: './google-auth.component.html',
     styleUrls: ['./google-auth.component.scss']
 })
-export class GoogleAuthComponent implements OnInit, OnDestroy {
-
-
+export class GoogleAuthComponent implements OnInit {
+    loading = true;
+    loggedIn: boolean;
+    user: any;
     constructor(
         private gapi: GapiService,
         private zone: NgZone,
@@ -17,19 +19,24 @@ export class GoogleAuthComponent implements OnInit, OnDestroy {
     ) { }
 
     ngOnInit() {
-        this.gapi.signInStatus$.subscribe( status => {
+        this.gapi.clientLoaded$.subscribe(status => {
             if (status) {
-                this.router.navigate(['graph']);
+                this.loading = false;
+                this.loggedIn = this.gapi.getStatus();
+                if (this.loggedIn) {
+                    this.user = this.gapi.getUser();
+                }
             }
         });
     }
 
-    ngOnDestroy() {}
-
     login() {
         this.gapi.handleSignInClick()
-            .then(() => this.zone.run(() => this.router.navigate(['graph'])))
-            .catch(err => console.error(err));
+            .then(() => this.router.navigate(['graph']));
+    }
+
+    logout() {
+        this.gapi.handleSignOutClick().then(() => this.loggedIn = this.gapi.getStatus());
     }
 
 

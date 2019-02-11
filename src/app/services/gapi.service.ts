@@ -8,39 +8,63 @@ declare const gapi: any;
 })
 export class GapiService {
 
-    signInStatus$ = new BehaviorSubject<boolean>(null);
+    clientLoaded$ = new BehaviorSubject<boolean>(false);
 
     constructor(
         private zone: NgZone
     ) { }
 
-    loadClient() {
-        gapi.load('client:auth2', this.initClient.bind(this));
-    }
 
-    private initClient() {
-        gapi.client.init({
-            apiKey: credentials.apiKey,
-            discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4'],
-            clientId: credentials.clientId,
-            scope: 'https://www.googleapis.com/auth/spreadsheets.readonly'
-        }).then(() => {
-            // Listen for sign-in state changes.
-            gapi.auth2.getAuthInstance().isSignedIn.listen(isSignedIn => {
-                this.zone.run(() => this.signInStatus$.next(isSignedIn));
+    loadClient(): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.zone.run(() => {
+                gapi.load('client:auth2', {
+                    callback: resolve,
+                    onerror: reject,
+                    timeout: 1000, // 5 seconds.
+                    ontimeout: reject
+                });
             });
-
-            // Handle the initial sign-in state.
-            this.zone.run(() => this.signInStatus$.next(gapi.auth2.getAuthInstance().isSignedIn.get()));
         });
     }
 
+    initClient(): Promise<any> {
+       return new Promise((resolve, reject) => {
+           this.zone.run(() => {
+               gapi.client.init({
+                   apiKey: credentials.apiKey,
+                   discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4'],
+                   clientId: credentials.clientId,
+                   scope: 'https://www.googleapis.com/auth/spreadsheets.readonly'
+               }).then(resolve, reject);
+           });
+        });
+    }
+
+    getUser(): any {
+        if (this.getStatus()) {
+            return gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile();
+        }
+    }
+
+    getStatus(): boolean {
+        return gapi.auth2.getAuthInstance().isSignedIn.get();
+    }
+
     handleSignInClick(): Promise<any> {
-        return gapi.auth2.getAuthInstance().signIn();
+        return new Promise((resolve, reject) => {
+            this.zone.run(() => {
+                return gapi.auth2.getAuthInstance().signIn();
+            }).then(resolve, reject);
+        });
     }
 
     handleSignOutClick(): Promise<any> {
-        return gapi.auth2.getAuthInstance().signOut();
+        return new Promise((resolve, reject) => {
+            this.zone.run(() => {
+                return gapi.auth2.getAuthInstance().signOut();
+            }).then(resolve, reject);
+        });
     }
 
     getSheet(ssid: string, dataRange: string): Promise<any> {

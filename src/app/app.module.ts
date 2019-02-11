@@ -18,8 +18,8 @@ import { AuthGuard } from './guards/auth.guard';
 import { NavComponent } from './components/nav/nav.component';
 
 const routes: Routes = [
-    { path: '', component: GoogleAuthComponent },
-    { path: 'graph', component: GraphComponent, canActivate: [AuthGuard] }
+    { path: '', component: GoogleAuthComponent},
+    { path: 'graph', component: GraphComponent, canActivate: [AuthGuard]}
 ];
 
 

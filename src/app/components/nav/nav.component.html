@@ -1,4 +1,4 @@
-<aside class="menu" *ngIf="status$ | async">
+<aside class="menu">
 
     <p class="menu-label">
         Graphics
@@ -11,7 +11,17 @@
         ACCOUNT
     </p>
     <ul class="menu-list">
-        <li><a (click)="signOut()">Sign out</a></li>
+        <li>
+            <div class="level">
+                <div class="level-left">
+
+                    <figure class="image is-32x32">
+                        <img class="is-rounded" [src]="image">
+                    </figure>
+                    <a (click)="signOut()">Sign out</a>
+                </div>
+            </div>
+        </li>
     </ul>
 </aside>
 

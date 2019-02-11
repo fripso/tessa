@@ -1,6 +1,5 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { GapiService } from './services/gapi.service';
-import { Observable } from 'rxjs';
 
 @Component({
     selector: 'app-root',
@@ -9,16 +8,20 @@ import { Observable } from 'rxjs';
 })
 export class AppComponent implements OnInit {
     title = 'tessa';
-    status: boolean;
 
     constructor(
-        private gapi: GapiService,
-        ) {}
+        private gapi: GapiService
+    ) {}
 
-        ngOnInit() {
-            this.gapi.loadClient();
-            this.gapi.signInStatus$.asObservable().subscribe(status => {
-                    this.status = status;
-            });
-        }
+    ngOnInit() {
+        this.gapi.loadClient().then(
+            result => {
+                return this.gapi.initClient();
+            }
+        ).then(result => {
+            this.gapi.clientLoaded$.next(true);
+        });
+
+
     }
+}
