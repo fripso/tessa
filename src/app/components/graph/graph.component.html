@@ -1,33 +1,36 @@
 <div class="level">
-    <input class="input" type="text" [(ngModel)]="sheet">
-    <button class="button" (click)="parseJSON(sheet)">Parse</button>
+    <input class="input" type="text" [(ngModel)]="ssid" placeholder="Sheet ID">
+    <input class="input" type="text" [(ngModel)]="range" placeholder="Range">
+    <button class="button" (click)="getSheet()">Load JSON</button>
 </div>
 <div class="columns">
-  <div class="column">
+  <div class="column is-10">
       <p>graph</p>
-    <!-- <div class="graph-container">
+    <div class="graph-container">
         <ngx-graph [update$]="update$"
             [curve]="curve"
             [links]="data.links"
             [nodes]="data.nodes"
+            [orientation]="'top'"
             [enableZoom]="false"
             [draggingEnabled]="false">
-            <ng-template #defsTemplate>
+             <!-- <ng-template #defsTemplate>
                 <svg:marker id="arrow" viewBox="0 -5 10 10" refX="8" refY="0" markerWidth="10" markerHeight="10"
                     orient="auto">
                     <svg:path d="M0,-5L10,0L0,5" />
                 </svg:marker>
-            </ng-template>
+            </ng-template> -->
 
             <ng-template #nodeTemplate let-node>
                 <svg:g (click)="onNodeClick($event, node)" class="node">
+                    <svg:circle [attr.r]="10"></svg:circle>
                     <svg:text>
-                        {{ node.id | idstr }}
+                        {{ node.id }}
                     </svg:text>
                 </svg:g>
             </ng-template>
 
-            <ng-template #linkTemplate let-link>
+            <!-- <ng-template #linkTemplate let-link>
                 <svg:g class="edge">
                     <svg:path class="line" stroke-width="1" marker-end="url(#arrow)"></svg:path>
                     <svg:text class="edge-label" text-anchor="middle">
@@ -36,15 +39,15 @@
                         </textPath>
                     </svg:text>
                 </svg:g>
-            </ng-template>
+            </ng-template> -->
         </ngx-graph>
-    </div> -->
+    </div>
   </div>
   <div class="column">
     <div *ngIf="currentNode" class="node-view">
         <p>ID: {{ currentNode.id}}</p>
         <p>Label: {{ currentNode.label}}</p>
-        <button (click)="addNode(currentNode.id)">Add node</button>
+        <button class="button" (click)="addNode(currentNode.id)">Add node</button>
     </div>
   </div>
 </div>

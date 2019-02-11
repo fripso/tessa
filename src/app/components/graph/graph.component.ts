@@ -12,22 +12,19 @@ import { GapiService } from '../../services/gapi.service';
 
 export class GraphComponent implements OnInit {
 
-    update$ = new Subject();
-
     data = {
         links: [],
         nodes: []
     };
 
-    curve = shape.curveCardinal;
-    currentNode: any;
+    curve = shape.curveNatural;
+    update$ = new Subject();
+
     i = 0;
 
-    sheet: any;
+    currentNode: any;
     ssid: string;
     range: string;
-
-
 
     constructor(
         private gapi: GapiService
@@ -35,21 +32,21 @@ export class GraphComponent implements OnInit {
 
     ngOnInit() {}
 
-    parseJSON(str: string) {
-        const json = JSON.parse(str);
-        const data = { nodes: [], links: [] };
-        json.assets.forEach(node => {
-
-
-            if (node.filename.length) {
+    private parseJSON(array: Array<Array<string>>, firstRow: number, idCol: number, linkCol: number, labelCol: number) {
+        const data = {
+            links: [],
+            nodes: []
+        };
+        array.slice(firstRow).forEach(node => {
+            if (node[labelCol]) {
                 data.nodes.push({
-                    id: node.id.toString(),
-                    label: node.filename
+                    id: node[idCol].substr(-4),
+                    label: node[labelCol]
                 });
-                if (node.parent !== node.id) {
+                if (node[linkCol] !== node[idCol]) {
                     data.links.push({
-                        source: node.parent.toString(),
-                        target: node.id.toString()
+                        source: node[linkCol].substr(-4),
+                        target: node[idCol].substr(-4)
                     });
                 }
             }
@@ -90,7 +87,9 @@ export class GraphComponent implements OnInit {
 
 
     getSheet() {
-        this.gapi.getSheet(this.ssid, this.range).then(res => console.log(res));
+        this.gapi.getSheet(this.ssid, this.range).then(res => {
+            this.parseJSON(res.result.values, 8, 0, 1, 13);
+        });
     }
 
 }
